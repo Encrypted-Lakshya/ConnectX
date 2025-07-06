@@ -1,94 +1,51 @@
-# 📲 ConnectX
+# ConnectX
 
-**ConnectX** is a powerful and beginner-friendly **Streamlit-based application** that allows you to communicate across multiple platforms — including **Email, SMS, WhatsApp, Instagram, LinkedIn**, and **Voice Calls** — all from one unified dashboard.
+ConnectX is a multi-channel communication tool built with **Streamlit** that lets you:
 
-## 🚀 Features
+- 📧 Send Emails
+- 📱 Send SMS via Twilio
+- ☎️ Make Voice Calls
+- 💬 Send WhatsApp Messages
+- 📸 Post to Instagram
+- 🔗 Post to LinkedIn
+- 🎙️ Text-to-Speech notifications
 
-* 📧 Send Emails using Gmail and SMTP
-* 📱 Send SMS using Twilio
-* ☎️ Make Voice Calls using Twilio
-* 💬 Send WhatsApp messages using `pywhatkit`
-* 📸 Post images to Instagram with caption
-* 🔗 Publish LinkedIn text posts
+## 🔊 New Feature: Text-to-Speech (TTS)
+- The app uses **pyttsx3** to provide voice feedback:
+  - At the start of the app
+  - After each task (success/failure)
+  - When required fields are missing
 
-## 🛠️ Tech Stack
+This enhances accessibility and makes interactions more intuitive.
 
-* Python 3.10+
-* [Streamlit](https://streamlit.io)
-* [Twilio](https://www.twilio.com)
-* [pywhatkit](https://pypi.org/project/pywhatkit/)
-* [instagrapi](https://github.com/adw0rd/instagrapi)
-* [linkedin-api](https://github.com/tomquirk/linkedin-api)
+## 🛠 Technologies Used
+- Python
+- Streamlit
+- Twilio API
+- pyttsx3 (TTS engine)
+- pywhatkit
+- instagrapi
+- linkedin-api
 
-## ⚙️ Installation
+## ⚙️ Features
+- Simple, clean Streamlit interface
+- Real-time form validation and feedback
+- Secure credential handling (via Streamlit forms)
+- TTS alerts for all tasks
 
+## 📦 How to Run
 ```bash
-# Clone this repository
-git clone https://github.com/yourusername/multi-channel-communicator.git
-cd multi-channel-communicator
-
-# Create a virtual environment (optional but recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
 pip install -r requirements.txt
+streamlit run app.py
 ```
 
-## ▶️ Run the App
+## 🔐 Notes
+- For Email: Use **Gmail App Password**
+- For Instagram: You may need to enable less secure apps or use a session
+- For LinkedIn: This uses a community-maintained API and may have limitations
 
-```bash
-streamlit run Task.py
-```
-
-## 🔐 Requirements
-
-### Email
-
-* Gmail account
-* App password (for 2FA enabled accounts)
-
-### Twilio
-
-* Twilio account with verified phone number
-* Account SID & Auth Token
-
-### Instagram
-
-* Valid Instagram credentials
-
-### WhatsApp
-
-* WhatsApp Web must be logged in on your browser
-
-### LinkedIn
-
-* LinkedIn username & password
-
-## 📁 File Structure
-
-```bash
-multi-channel-communicator/
-├── Task.py           # Main Streamlit app
-├── README.md         # You're reading it 😄
-└── requirements.txt  # Required Python packages
-```
-
-## 🧪 Example Use-Cases
-
-* One-click digital marketing
-* Personal multi-platform broadcast
-* Send scheduled reminders to clients or students
-* Share media posts across platforms easily
-
-## 🤝 Contributing
-
-Pull requests are welcome. For major changes, please open an issue first.
-
-## 🛡️ License
-
-[MIT](https://choosealicense.com/licenses/mit/)
+## 📄 License
+MIT
 
 ---
-
-> Made with ❤️ by Lakshya Rohra
+Feel free to contribute or suggest improvements!
