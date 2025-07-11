@@ -19,7 +19,7 @@ def speak_text(text):
     engine.runAndWait()
 
 # ------------------------------
-# Callable functions
+# Define your action functions
 # ------------------------------
 
 def send_email():
@@ -36,7 +36,6 @@ def send_email():
         if submit_email:
             if not (email_sender and email_password and email_receiver and subject and body):
                 st.warning("⚠️ Please fill in all fields.")
-                speak_text("Please fill in all fields.")
             else:
                 try:
                     msg = EmailMessage()
@@ -50,11 +49,9 @@ def send_email():
                         smtp.send_message(msg)
 
                     st.success("✅ Email sent successfully!")
-                    speak_text("Email sent successfully")
                     st.code(f"To: {email_receiver}\nSubject: {subject}")
                 except Exception as e:
                     st.error(f"❌ Failed to send email: {e}")
-                    speak_text("Failed to send email")
 
 def get_twilio_info():
     st.subheader("🔐 Twilio Credentials")
@@ -79,7 +76,6 @@ def send_sms():
             if submit_sms:
                 if not from_number or not to_number or not sms_body:
                     st.warning("⚠️ Please fill in all fields.")
-                    speak_text("Please fill in all fields.")
                 else:
                     try:
                         message = client.messages.create(
@@ -88,11 +84,9 @@ def send_sms():
                             to=to_number
                         )
                         st.success("📱 SMS sent successfully!")
-                        speak_text("SMS sent successfully")
                         st.code(f"SID: {message.sid}")
                     except Exception as e:
                         st.error(f"❌ Failed to send SMS: {e}")
-                        speak_text("Failed to send SMS")
 
 def make_voice_call():
     client = get_twilio_info()
@@ -107,7 +101,6 @@ def make_voice_call():
             if submit_call:
                 if not from_number or not to_number or not call_message:
                     st.warning("⚠️ Please fill in all fields.")
-                    speak_text("Please fill in all fields.")
                 else:
                     try:
                         call = client.calls.create(
@@ -116,11 +109,9 @@ def make_voice_call():
                             twiml=f"<Response><Say>{call_message}</Say></Response>"
                         )
                         st.success("✅ Call initiated successfully!")
-                        speak_text("Call initiated successfully")
                         st.code(f"Call SID: {call.sid}")
                     except Exception as e:
                         st.error(f"❌ Failed to place the call: {e}")
-                        speak_text("Failed to place the call")
 
 def send_whatsapp_message():
     st.subheader("💬 Send WhatsApp Message")
@@ -134,7 +125,6 @@ def send_whatsapp_message():
         if submit_whatsapp:
             if not phone or not message:
                 st.warning("⚠️ Please fill in all fields.")
-                speak_text("Please fill in all fields.")
             else:
                 try:
                     whatsapp.sendwhatmsg(
@@ -144,10 +134,8 @@ def send_whatsapp_message():
                         time_min=int(minute)
                     )
                     st.success("✅ WhatsApp message scheduled successfully!")
-                    speak_text("WhatsApp message scheduled successfully")
                 except Exception as e:
                     st.error(f"❌ Failed to send message: {e}")
-                    speak_text("Failed to send WhatsApp message")
 
 def post_to_instagram():
     st.subheader("📸 Post to Instagram")
@@ -161,13 +149,10 @@ def post_to_instagram():
         if submit_ig:
             if not username or not password:
                 st.error("❌ Please enter your Instagram credentials.")
-                speak_text("Please enter your Instagram credentials")
             elif uploaded_file is None:
                 st.error("❌ Please upload an image.")
-                speak_text("Please upload an image")
             elif not caption:
                 st.error("❌ Please enter a caption.")
-                speak_text("Please enter a caption")
             else:
                 try:
                     cl = insta()
@@ -177,10 +162,8 @@ def post_to_instagram():
                         tmp_file_path = tmp_file.name
                     cl.photo_upload(tmp_file_path, caption)
                     st.success("✅ Successfully posted to Instagram!")
-                    speak_text("Successfully posted to Instagram")
                 except Exception as e:
                     st.error(f"❌ Error: {e}")
-                    speak_text("Failed to post to Instagram")
 
 def post_to_linkedin():
     st.subheader("🔗 Post to LinkedIn")
@@ -193,7 +176,6 @@ def post_to_linkedin():
         if submit_ln:
             if not username or not password or not post_text:
                 st.warning("⚠️ Please fill in all fields.")
-                speak_text("Please fill in all fields")
             else:
                 try:
                     api = Linkedin(username, password)
@@ -204,11 +186,9 @@ def post_to_linkedin():
                         text=post_text
                     )
                     st.success("✅ Post uploaded successfully!")
-                    speak_text("Post uploaded successfully")
                     st.code(str(response))
                 except Exception as e:
                     st.error(f"❌ Failed to post: {e}")
-                    speak_text("Failed to post to LinkedIn")
 
 # ------------------------------
 # Streamlit Interface
@@ -216,7 +196,15 @@ def post_to_linkedin():
 
 st.set_page_config(page_title="ConnectX", layout="centered")
 st.title("📲 ConnectX")
-speak_text("Welcome to ConnectX.")
+
+# ✅ Speak welcome only once per session
+if "spoken" not in st.session_state:
+    st.session_state.spoken = False
+
+if not st.session_state.spoken:
+    speak_text("Welcome to ConnectX.")
+    st.session_state.spoken = True
+
 st.write("Select a communication task from the dropdown menu below:")
 
 task = st.selectbox("Choose an action:", [
@@ -227,7 +215,9 @@ task = st.selectbox("Choose an action:", [
     "Post on Instagram",
     "Post on LinkedIn"
 ])
-speak_text("Select a communication task from the dropdown menu below.")
+
+# No repeated speech here
+# speak_text("Select a communication task from the dropdown menu below.")
 
 if task == "Send Email":
     send_email()
